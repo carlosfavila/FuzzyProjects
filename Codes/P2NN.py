@@ -86,97 +86,90 @@ b15=-np.dot(w15,[0,8])
 b16=-np.dot(w16,[0,1])
 
 #------------------------------------------------------------MOUTH------------------------------------------------------------
-#first neuron for the mouth
-#Yl7 = -(1/4)x+1
 
-#second neuron for the mouth
-#Yl8 = 0.75 from x=1 to x=7
+#so, for this we have 4 lines (neurons):
+# Xl7 = 1 (vertical line)
+# Xl8 = 7 (vertical line)
+# Yl9 = 0.25
+# Yl10 = 0.75
+# Yl11 = -(1/4)*X + 1 -> wl11=1/(1/4)*X -> wl11=[-1,-4]  
+# Yl12 = -(3/4)*X + 1 -> wl12=1/(3/4)*X -> wl12=[1,4/3]
+# Xl13 = 1 (vertical line)
+# Yl14 = (1/4)*X + 1 - > wl14=-1/(1/4)*X -> wl14=[1,-4]
+# Yl15 = (3/4)*X + 5 - > wl15=-1/(3/4)*X -> wl15=[-1,4/3]
+# Yl16 = 7 (vertical line) 
 
-#third neuron for the mouth
-#Yl9 = (1/4)x-1
 
-#fourth neuron for the mouth
-#Yl10 = -(3/4)x+1
+#So, the weights are:
+w17=[1,0]
+w18=[-1,0]
+w19=[0,1]
+w110=[0,-1]
+w111=[-1,-4]
+w112=[1,4/3]
+w113=w18
+w114=[1,-4]
+w115=[-1,4/3]
+w116=w17
 
-#fifth neuron for the mouth
-#Yl11 = 0.25 from x=1 to x=7
 
-#sixth neuron for the mouth
-#Yl12 = (3/4)x-5
+#CALCULATING THE BIAS's
+#for point on the fourth limit line (neuron 7) P7[1,0.75]
+b17=-np.dot(w17,[1,0.75])
 
-#Calculating the weights for the mouth
-#So, the weight line equations are:
-# Yw17 = (1/4)X
-# Yw18 = inf
-# Yw19 = -(1/4)X
-# Yw110 = (3/4)X
-# Yw111 = inf
-# Yw112 = -(3/4)X
+#for point on the fifth limit line (neuron 8) P8[7,0.25]
+b18=-np.dot(w18,[7,0.25])
 
-# so, we want the line of the weight 7 points inside the mouth
-# proposing x = -1, with Yw17=(1/4)x we get Yw17 = -1/4
+#for point on the sixth limit line (neuron 9) P9[3.5,0.25]
+b19=-np.dot(w19,[3.5,0.25])
 
-# and we also want the line of the weight 8 points inside the mouth
-# but this one is a vertical line so, we can propose x=0 and in Yw18=-1
+#for point on the seventh limit line (neuron 10) P10[3.5,0.75]
+b110=-np.dot(w110,[3.5,0.75])
 
-# and we also want the line of the weight 9 points inside the mouth
-# proposing x = 1, with Yw19=-(1/4)x we get Yw19 = -1/4
+#for point on the eighth limit line (neuron 11) P11[0,(7/8)]
+b111=-np.dot(w111,[0,1])
 
-# and we also want the line of the weight 10 points inside the mouth
-# proposing x = 1, with Yw110=(3/4)x we get Yw110 = 3/4
+#for point on the ninth limit line (neuron 12) P12[0,(5/8)]
+b112=-np.dot(w112,[0,1])
 
-# and we also want the line of the weight 11 points inside the mouth
-# but this one is a vertical line so, we can propose x=0 and in Yw111=1
+#for point on the tenth limit line (neuron 13) P13[1,(0.5)]
+b113=-np.dot(w113,[1,0.5])
 
-# and we also want the line of the weight 12 points inside the mouth
-# proposing x = -1, with Yw112=-(3/4)x we get Yw112 = 3/4
+#for point on the eleventh limit line (neuron 14) P14[7,(0.75)]
+b114=-np.dot(w114,[7,0.75])
 
-w17=[-1,-(1/4)]
-w18=[0,-1]
-w19=[1,-(1/4)]
-w110=[1,(3/4)]
-w111=[0,1]
-w112=[-1,(3/4)]
+#for point on the twelfth limit line (neuron 15) P15[7,(0.25)]
+b115=-np.dot(w115,[7,0.25])
 
-#calculating the bias for the mouth
-# a point on line 7 is [0.5,-(1/4)*0.5+1=0.875]
-b17=-np.dot(w17,[0.5,0.875])
-
-# a point on line 8 is [1,0.75]
-b18=-np.dot(w18,[4,0.75])
-
-# a point on line 9 is [7.5,(1/4)*7.5-1=0.875]
-b19=-np.dot(w19,[7.5,0.875])
-
-# a point on line 10 is [0.5,-(3/4)*0.5+1=0.625]
-b110=-np.dot(w110,[0.5,0.625])
-
-# a point on line 11 is [4,0.25]
-b111=-np.dot(w111,[4,0.25])
-
-# a point on line 12 is [7.5,(3/4)*7.5-5=0.625]
-b112=-np.dot(w112,[7.5,0.625])
+#for point on the thirteenth limit line (neuron 16) P16[7,(0.5)]
+b116=-np.dot(w116,[7,0.5])
 
 
 
-W1=[w11,w12,w13,w14,w15]
-B1=[[b11],[b12],[b13],[b14],[b15]]
+W1=[w11,w12,w13,w14,w15,w17,w18,w19,w110,w111,w112,w113,w114,w115,w116]
+B1=[[b11],[b12],[b13],[b14],[b15],[b17],[b18],[b19],[b110],[b111],[b112],[b113],[b114],[b115],[b116]]
 
 
 #------------------------------------------------------------2nd layer AND------------------------------------------------------------
-#W2=[[1,1,1,0,0,0,0,0,0,0,0], # this line is the sum of the weights of the left eye
-#    [0,0,1,1,1,0,0,0,0,0,0],  # this line is the sum of the weights of the right eye
-#    [0,0,0,0,0,1,1,1,1,1,1]] # this line is the sum of the weights of the mouth
+#W2=[[1,1,1,0,0,0,0,0,0,0,0,0,0,0,0], # this line is the sum of the weights of the left eye
+#    [0,0,1,1,1,0,0,0,0,0,0,0,0,0,0], # this line is the sum of the weights of the right eye
+#    [0,0,0,0,0,1,1,1,1,0,0,0,0,0,0], # this line is the sum of the weights of the mouth's rectangle
+#    [0,0,0,0,0,0,0,0,0,1,1,1,0,0,0], # this line is the sum of the weights of the mouth's left triangle
+#    [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1]] # this line is the sum of the weights of the mouth's right triangle
 
 #W*P+b>=0 MINIMUM CONDITION TO GET '1'
-#[1,1,1,0,0,0,0,0,0,0,0]*[[a1],[a2],[a3],[a4],[a5],[a6],[a7],[a8],[a9],[a10],[a11]]+b>=0
-#[0,0,1,1,1,0,0,0,0,0,0]
-#[0,0,0,0,0,1,1,1,1,1,1]
+#W2=[[1,1,1,0,0,0,0,0,0,0,0,0,0,0,0], *[[a1],[a2],[a3],[a4],[a5],[a7],[a8],[a9],[a10],[a11],[a12],[a13],[a14],[a15],[a16]]+b>=0
+#    [0,0,1,1,1,0,0,0,0,0,0,0,0,0,0], 
+#    [0,0,0,0,0,1,1,1,1,0,0,0,0,0,0], 
+#    [0,0,0,0,0,0,0,0,0,1,1,1,0,0,0], 
+#    [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1]] 
 
 #W*P+b<0 MAXIMUM CONDITION TO GET '0'
-#[1,1,1,0,0,0,0,0,0,0,0]*[[a1],[a2],[a3],[a4],[a5],[a6],[a7],[a8],[a9],[a10],[a11]]+b<0
-#[0,0,1,1,1,0,0,0,0,0,0]
-#[0,0,0,0,0,1,1,1,1,1,1]
+#W2=[[1,1,1,0,0,0,0,0,0,0,0,0,0,0,0], *[[a1],[a2],[a3],[a4],[a5],[a7],[a8],[a9],[a10],[a11],[a12],[a13],[a14],[a15],[a16]]+b<0
+#    [0,0,1,1,1,0,0,0,0,0,0,0,0,0,0], 
+#    [0,0,0,0,0,1,1,1,1,0,0,0,0,0,0], 
+#    [0,0,0,0,0,0,0,0,0,1,1,1,0,0,0], 
+#    [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1]] 
 
 # for the right eye
 #[1,1,1]*[[a1],[a2],[a3]]+b>=0 # to get '1'
@@ -196,31 +189,46 @@ B1=[[b11],[b12],[b13],[b14],[b15]]
 # 2+b<0 -> b<-2
 # -3<=b<-2 -> b=-2.5
 
-#for the mouth
-#[1,1,1,1,1,1]*[[a6],[a7],[a8],[a19],[a10],[a11]]+b>=0 # to get '1'
-#[1,1,1,1,1,1]*[[1],[1],[1],[1],[1],[1]]+b>=0
-# 6+b>=0 -> b>=-6
+#for the mouth's rectangle
+#[1,1,1,1]*[[a7],[a8],[a19],[a10]]+b>=0 # to get '1'
+#[1,1,1,1]*[[1],[1],[1],[1]]+b>=0
+# 4+b>=0 -> b>=-4
 
-#[1,1,1,1,1,1]*[[a6],[a7],[a8],[a9],[a10],[a11]]+b<0 # to get '0'
-#[1,1,1,1,1,1]*[[1],[1],[1],[1],[1],[0]]+b<0
-# 5+b<0 -> b<-5
-# -6<=b<-5 -> b=-5.5
+#[1,1,1,1]*[[a7],[a8],[a19],[a10]]+b<0 # to get '0'
+#[1,1,1,1]*[[1],[1],[1],[0]]+b<0
+# 3+b<0 -> b<-3
+# -4<=b<-3 -> b=3.5
 
-W2=[[1,1,1,0,0],
-    [0,0,1,1,1]]
+#for the mouth's triangles
+#[1,1,1]*[[a11],[a12],[a13]]+b>=0 # to get '1'
+#[1,1,1]*[[1],[1],[1]]+b>=0
+# 3+b>=0 -> b>=-3
 
-B2=[[-2.5],[-2.5]]
+#[1,1,1]*[[a11],[a12],[a13]]+b<0 # to get '0'
+#[1,1,1]*[[1],[1],[0]]+b<0
+# 2+b<0 -> b<-2
+# -3<=b<-2 -> b=-2.5
+
+
+W2=[[1,1,1,0,0,0,0,0,0,0,0,0,0,0,0], 
+    [0,0,1,1,1,0,0,0,0,0,0,0,0,0,0], 
+    [0,0,0,0,0,1,1,1,1,0,0,0,0,0,0], 
+    [0,0,0,0,0,0,0,0,0,1,1,1,0,0,0], 
+    [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1]] 
+
+
+B2=[[-2.5],[-2.5],[-3.5],[-2.5],[-2.5]]
 
 #------------------------------------------------------------3rd layer OR------------------------------------------------------------
 
-W3=[1,1] # all inputs have the same weight (same importance)
+W3=[1,1,1,1,1] # all inputs have the same weight (same importance)
 
 #W*P+b>=0 MINIMUM CONDITION TO GET '1'
-#[1,1,1]*[[1],[0],[0]]+b>=0 or [1,1,1]*[[0],[1],[0]]+b>=0 or [1,1,1]*[[0],[0],[1]]+b>=0
+#[1,1,1,1]*[[1],[0],[0],[0]]+b>=0 or [1,1,1]*[[0],[1],[0],[0]]+b>=0 or [1,1,1]*[[0],[0],[1],[0]]+b>=0 or [1,1,1]*[[0],[0],[0],[1]]+b>=0
 # 1+b>=0 -> b>=-1
 
 #W*P+b<0 MAXIMUM CONDITION TO GET '0'
-#[1,1,1]*[[0],[0],[0]]+b<0 
+#[1,1,1,1]*[[0],[0],[0],[0]]+b<0
 # 0+b<0 -> b<0
 
 #-1<=b<0 -> b=-0.5
@@ -251,30 +259,32 @@ yl6=[]
 for i in range(len(xl6)):
     yl6.append(1)
 
+xl9=np.arange(1,7.1,0.1)
+yl9=[]
+for i in range(len(xl9)):
+    yl9.append(0.75)
 
-xl7=np.arange(0,1.1,0.1)
-yl7=-0.25*xl7+1
+xl10=np.arange(1,7.1,0.1)
+yl10=[]
+for i in range(len(xl10)):
+    yl10.append(0.25)
 
-xl8=np.arange(1,7.1,0.1)
-yl8=[]
-for i in range(len(xl8)):
-    yl8.append(0.75)
+xl11=np.arange(0,1.1,0.1)
+yl11=-(1/4)*xl11+1
 
-xl9=np.arange(7,8.1,0.1)
-yl9=0.25*xl9-1
+xl12=np.arange(0,1.1,0.1)
+yl12=-(3/4)*xl12+1
 
-yl10=-0.75*xl7+1
+xl13=np.arange(7,8.1,0.1)
+yl13=(1/4)*xl13-1
 
-yl11=[]
-for i in range(len(xl8)):
-    yl11.append(0.25)
-
-yl12=0.75*xl9-5
+xl14=np.arange(7,8.1,0.1)
+yl14=(3/4)*xl14-5
 
 plt.figure(1)
 
 xp=np.linspace(0,8)
-yp=np.linspace(0,3)
+yp=np.linspace(0,2.5)
 
 for x in xp:
     for y in yp:
@@ -289,10 +299,11 @@ for x in xp:
         if a3==1:
             plt.plot(x,y,'bo')
         else:
-            plt.plot(x,y,'ro')
+            plt.plot(x,y,'go')
 
 
-plt.plot(xl1,yl1,'k',xl2,yl2,'k',xl3,yl3,'k',xl4,yl4,'k',xl5,yl5,'k',xl6,yl6,'k',xl7,yl7,'k',xl8,yl8,'k',xl9,yl9,'k',xl7,yl10,'k',xl8,yl11,'k',xl9,yl12,'k')
+plt.plot(xl1,yl1,'k',xl2,yl2,'k',xl3,yl3,'k',xl4,yl4,'k',xl5,yl5,'k',xl6,yl6,'k',
+         xl9,yl9,'k',xl10,yl10,'k',xl11,yl11,'k',xl12,yl12,'k',xl13,yl13,'k',xl14,yl14,'k',linewidth=2.0)
 plt.grid(True)
 
 plt.show()
